@@ -28,7 +28,7 @@ exports.handler = async function(event) {
     
     // Tâche 2 : Envoyer l'e-mail de résultats avec Resend
     await resend.emails.send({
-      from: 'contact@votre-domaine-verifie.com', // <-- REMPLACEZ PAR VOTRE ADRESSE E-MAIL VÉRIFIÉE SUR RESEND
+      from: 'romain.dagnano@aeterniapatrimoine.fr',
       to: email,
       subject: 'Vos résultats au questionnaire Assurance-Vie Aeternia',
       html: `

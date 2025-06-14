@@ -4,29 +4,33 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
 exports.handler = async function(event) {
-  // On récupère les données envoyées par le questionnaire
   const { email, score, profile, description } = JSON.parse(event.body);
 
   if (!email) {
     return { statusCode: 400, body: JSON.stringify({ message: "L'adresse e-mail est manquante" }) };
   }
 
-  // On lit les clés secrètes depuis les variables d'environnement
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_KEY;
   const resendApiKey = process.env.RESEND_API_KEY;
 
-  // Initialisation des clients Supabase et Resend
   const supabase = createClient(supabaseUrl, supabaseKey);
   const resend = new Resend(resendApiKey);
 
   try {
-    // Tâche 1 : Sauvegarder l'e-mail dans la base de données Supabase
-    await supabase.from('prospects').insert([{ email: email }]);
+    // --- Tâche 1 : Sauvegarder l'e-mail dans Supabase ---
+    const { error: supabaseError } = await supabase
+      .from('prospects')
+      .insert([{ email: email }]);
+
+    // NOUVEAU : On vérifie s'il y a une erreur retournée par Supabase
+    if (supabaseError) {
+      throw new Error(`Erreur Supabase: ${supabaseError.message}`);
+    }
     
-    // Tâche 2 : Envoyer l'e-mail de confirmation avec Resend
-    await resend.emails.send({
-      from: 'romain.dagnano@aeterniapatrimoine.fr', // Votre adresse vérifiée
+    // --- Tâche 2 : Envoyer l'e-mail de confirmation avec Resend ---
+    const { error: resendError } = await resend.emails.send({
+      from: 'romain.dagnano@aeterniapatrimoine.fr',
       to: email,
       subject: 'Vos résultats au questionnaire Assurance-Vie Aeternia',
       html: `
@@ -45,13 +49,18 @@ exports.handler = async function(event) {
         </div>
       `,
     });
+    
+    // NOUVEAU : On vérifie s'il y a une erreur retournée par Resend
+    if (resendError) {
+      throw new Error(`Erreur Resend: ${resendError.message}`);
+    }
 
     // Si tout a réussi, on renvoie une réponse de succès
     return { statusCode: 200, body: JSON.stringify({ message: "Succès !" }) };
 
   } catch (error) {
-    // En cas d'erreur avec Supabase ou Resend, on la log et on renvoie une erreur
-    console.error(error);
+    // Si une erreur a été "jetée" (throw), on la capture ici
+    console.error("Erreur détaillée de la fonction:", error);
     return { statusCode: 500, body: JSON.stringify({ message: error.message }) };
   }
 };

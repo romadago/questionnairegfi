@@ -1,0 +1,8 @@
+# Fichier : netlify.toml
+
+[build]
+  # Dossier à publier après la compilation
+  publish = "dist"
+  
+  # Dossier où se trouvent les fonctions
+  functions = "netlify/functions"

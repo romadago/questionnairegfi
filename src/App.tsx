@@ -5,8 +5,8 @@ import MoteurQuestionnaire from './MoteurQuestionnaire';
 import logoAeternia from './logo-aeternia.svg';
 import './index.css';
 
-// --- On importe la nouvelle configuration GFI ---
-import { configGFI } from './configurations/GFI.js';
+// --- On importe la nouvelle configuration GFI (sans l'extension .js) ---
+import { configGFI } from './configurations/GFI';
 
 function App() {
   const [email, setEmail] = useState("");

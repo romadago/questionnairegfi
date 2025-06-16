@@ -87,27 +87,28 @@ const questions = [
   },
 ];
 
+// --- RÉSULTATS AVEC COMMENTAIRES ENRICHIS ---
 const results = [
   {
     min: 0,
     max: 7,
     label: "Débutant",
-    imageSrc: "/scpi_debutant.jpg", // Nom d'image suggéré
-    description: "Tu découvres encore l’univers des SCPI. Une présentation ou un entretien peut t’aider à y voir plus clair.",
+    imageSrc: "/debutant.jpg",
+    description: "Félicitations, vous avez fait le premier pas ! L'univers des SCPI peut sembler complexe, mais vous avez le bon état d'esprit. Pour transformer cette curiosité en une stratégie solide, une présentation claire et sans jargon est souvent la meilleure étape. Prenons le temps d'y voir plus clair ensemble.",
   },
   {
     min: 8,
     max: 14,
     label: "Intermédiaire",
-    imageSrc: "/scpi_intermediaire.jpg", // Nom d'image suggéré
-    description: "Tu as de bonnes bases, mais quelques notions plus techniques restent à approfondir.",
+    imageSrc: "/intermediaire.jpg",
+    description: "Excellent score ! Vous avez clairement de bonnes bases sur le fonctionnement des SCPI. Vous êtes à un tournant : celui où l'on passe de la connaissance générale à la stratégie personnalisée (fiscalité, diversification...). Ne laissez pas les détails techniques vous freiner, parlons-en pour affiner votre approche.",
   },
   {
     min: 15,
     max: 21,
     label: "Avancé",
-    imageSrc: "/scpi_avance.jpg", // Nom d'image suggéré
-    description: "Tu maîtrises bien les SCPI, leur fonctionnement, leurs limites et opportunités. Bravo !",
+    imageSrc: "/avance.jpg",
+    description: "Bravo, votre maîtrise du sujet est impressionnante ! Vous comprenez non seulement le fonctionnement, mais aussi les opportunités et les limites des SCPI. Notre discussion ne portera pas sur les bases, mais sur l'optimisation fine : comment intégrer au mieux cet outil dans votre stratégie patrimoniale globale ? Challengeons nos idées.",
   },
 ];
 

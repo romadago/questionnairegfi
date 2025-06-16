@@ -45,9 +45,7 @@ const MoteurQuestionnaire: React.FC<MoteurProps> = ({ config, email }) => {
     return sum + (option ? option.points : 0);
   }, 0);
 
-  // NOUVEAU : Calcul dynamique du score maximum
   const maxScore = config.questions.reduce((total, question) => {
-    // Trouve le maximum de points possible pour une question
     const maxPointsInQuestion = Math.max(...question.options.map(opt => opt.points));
     return total + maxPointsInQuestion;
   }, 0);
@@ -57,7 +55,10 @@ const MoteurQuestionnaire: React.FC<MoteurProps> = ({ config, email }) => {
 
   // --- JSX (Rendu visuel) ---
   if (!submitted) {
-    // Le code du questionnaire en cours reste le même
+    // CORRECTION ICI : On déclare une variable typée pour la question actuelle.
+    // Cela utilise le type 'Question' importé et résout l'erreur de build.
+    const currentQuestion: Question = config.questions[current];
+
     return (
       <form onSubmit={handleSubmit}>
         <h1 className="text-3xl font-bold mb-8 text-center text-cyan-vif">{config.titre}</h1>
@@ -71,9 +72,10 @@ const MoteurQuestionnaire: React.FC<MoteurProps> = ({ config, email }) => {
               <div className="bg-cyan-vif h-2 rounded-full transition-all duration-300" style={{ width: `${progressPercentage}%` }}></div>
             </div>
           </div>
-          <p className="text-xl font-semibold mb-6 text-gray-200">{config.questions[current].question}</p>
+          {/* On utilise notre nouvelle variable typée */}
+          <p className="text-xl font-semibold mb-6 text-gray-200">{currentQuestion.question}</p>
           <div className="space-y-4">
-            {config.questions[current].options.map((opt) => (
+            {currentQuestion.options.map((opt) => (
               <label key={opt.value} className={`block cursor-pointer p-4 rounded-xl transition-all duration-200 ${answers[current] === opt.value ? 'bg-cyan-vif text-fond-sombre font-bold ring-2 ring-white' : 'bg-fond-sombre hover:bg-bloc-sombre border border-cyan-vif/50 text-gray-200'}`}>
                 <input type="radio" name={`q${current}`} value={opt.value} checked={answers[current] === opt.value} onChange={() => handleChange(opt.value)} className="hidden" required />
                 {opt.label}
@@ -98,7 +100,6 @@ const MoteurQuestionnaire: React.FC<MoteurProps> = ({ config, email }) => {
     <div className="text-center animate-fade-in">
       <img src={result?.imageSrc} alt={result?.label} className="w-48 h-48 mx-auto mb-6 object-contain"/>
       <h2 className="text-2xl font-semibold mb-4 text-cyan-vif">Votre Résultat</h2>
-      {/* CORRIGÉ ICI : on utilise la variable `maxScore` au lieu de 18 */}
       <div className="text-5xl font-bold mb-2 text-white">{totalPoints} / {maxScore}</div>
       <div className="text-3xl font-semibold mb-4 text-cyan-vif">{result?.label}</div>
       <p className="mb-8 text-gray-300 max-w-md mx-auto">{result?.description}</p>
